@@ -11,17 +11,36 @@
 		}
 		function onBtnStartClick(){
 			displayMessage("Work Started...");
-			doWork();
-			displayMessage("Work Completed...");
+			doWork(function(){
+				displayMessage("Work Completed...");
+			},function(percentCompleted){
+				document.getElementById("progress").value = percentCompleted;
+			});
+
 		}
 		function displayMessage(msg){
 			document.getElementById("divMessages").innerHTML += msg + "<br/>";
 		}
-		function doWork(){
-			for(var i=0;i<100000;i++)
-				for(var j=0;j<1000;j++)
-					for(var k=0;k<100;k++)
-					{}
+		function doWork(onCompletionCallback, onProgressCallback){
+			var maxIterations = 1000
+				,currentIteration = 0;
+
+			(function(){
+				if (currentIteration>=maxIterations) {
+					if (!!onCompletionCallback) onCompletionCallback();
+					return;
+				}
+				for(var i=0;i<100000/maxIterations;i++)
+					for(var j=0;j<1000;j++)
+						for(var k=0;k<100;k++)
+						{}
+				currentIteration++;	
+				if (currentIteration % 10 == 0 && !!onProgressCallback)
+					onProgressCallback(currentIteration/10);
+
+				setTimeout(arguments.callee,1);	
+			}());
+			
 		}
 	}(window,undefined));
 
@@ -30,6 +49,9 @@
 <body>
 	<input type="text" name="" id="">
 	<input type="button" value="Start" id="btnStart">
+	<div>
+		<progress id="progress" min="0" max="100" value="0"></progress>
+	</div>
 	<div id="divMessages"></div>
 </body>
 </html>
