@@ -27,7 +27,7 @@
 	  	clear()
 	*/
 	function TaskStorage(){
-		var storage = window.localStorage;
+		var storage = window.sessionStorage;
 		function getTaskObj(id,task){
 			return {id : id, task : task};
 		}
