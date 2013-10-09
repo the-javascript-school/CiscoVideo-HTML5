@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Single Threaded UI Problem</title>
+	<script>
+	(function(window){
+		var worker = new Worker("ComplexWork.js");
+		worker.addEventListener("message",function(msgEvt){
+			if (msgEvt.data.type === "completed"){
+				displayMessage("Work Completed");
+			} else if (msgEvt.data.type == "progress"){
+				document.getElementById("progress").value = msgEvt.data.percentCompleted;
+			} else {
+				console.log("Dont know how to handle this", msgEvt);
+			}
+		});
+
+		window.addEventListener("DOMContentLoaded",initialize);
+		function initialize(){
+			document.getElementById("btnStart").addEventListener("click",onBtnStartClick);
+		}
+		function onBtnStartClick(){
+			displayMessage("Work Started...");
+			worker.postMessage({type : "start"});
+		}
+		function displayMessage(msg){
+			document.getElementById("divMessages").innerHTML += msg + "<br/>";
+		}
+		
+	}(window,undefined));
+
+	</script>
+</head>
+<body>
+	<input type="text" name="" id="">
+	<input type="button" value="Start" id="btnStart">
+	<div>
+		<progress id="progress" min="0" max="100" value="0"></progress>
+	</div>
+	<div id="divMessages"></div>
+</body>
+</html>
