@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" manifest="app.manifest">
+<head>
+	<meta charset="UTF-8">
+	<title>Task Manager</title>
+	<link rel="stylesheet" href="TaskManager-Online.css">
+	<script src="TaskStorage.js"></script>
+	<script src="TaskManager.js"></script>
+	<style>
+	#divCacheState{
+		display: none;
+	}
+	</style>
+	<script>
+		(function(window){
+			window.applicationCache.addEventListener("updateready",function(){
+				document.getElementById("divCacheState").style.display = "block";
+			});
+			window.addEventListener("DOMContentLoaded",function(){
+				document.getElementById("btnLoad").addEventListener("click",function(){
+					window.location.reload();
+				})
+			})
+		}(window,undefined));
+
+	</script>
+</head>
+<body>
+	<h1>Task Manager</h1>
+	<span>Task :</span>
+	<input type="text" name="" id="txtTask">
+	<input type="button" value="Add Task" id="btnAddTask">
+	<select name="" id="selectTasks"></select>
+	<input type="button" value="Remove Task" id="btnRemoveTask">
+	<ul id="ulTaskList">
+		 	
+	</ul>
+	<div id="divMessages"></div>
+	<div id="divCacheState">
+		<span>A new version of the application is available. </span>
+		<input type="button" value="Load it!!" id="btnLoad">
+
+	</div>
+</body>
+</html>

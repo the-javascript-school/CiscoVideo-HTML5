@@ -1,0 +1,10 @@
+h1{
+	margin: 0px;
+	margin-bottom: 10px;
+	border-top: 2px solid blue;
+	border-bottom: 2px solid blue;
+	background: lightblue;
+	text-align: center;
+	padding: 20px;
+	font-size: 28px;
+}
