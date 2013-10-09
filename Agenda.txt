@@ -1,0 +1,12 @@
+1. Local Storage
+2. Session Storage
+3. Web Workers
+4. Web Sockets
+5. Offline Application Cache
+6. New Structural Elements
+7. New Input Types
+8. Geolocation
+9. Audio
+10. Video
+
+11. CSS 3.0

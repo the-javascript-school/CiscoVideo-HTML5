@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Task Manager</title>
+	<style>
+	h1{
+		margin: 0px;
+		margin-bottom: 10px;
+		border-top: 2px solid blue;
+		border-bottom: 2px solid blue;
+		background: lightblue;
+		text-align: center;
+		padding: 20px;
+		font-size: 28px;
+	}
+	</style>
+	<script>
+	/*
+	Local Storage API
+	window.localStorage
+		length
+		setItem(k,v)
+	  v	getItem(k)
+	  	removeItem(k)
+	  k key(index)
+	  	clear()
+	*/
+	function TaskStorage(){
+		var storage = window.localStorage;
+		function getTaskObj(id,task){
+			return {id : id, task : task};
+		}
+		this.addTask = function(taskName){
+			var newId = new Date().getTime().toString();
+			storage.setItem(newId,taskName);
+			return getTaskObj(newId,taskName);
+		};
+		this.getAllTasks = function(){
+			var result = [];
+			for(var i=0;i<storage.length;i++){
+				var id = storage.key(i);
+				var task = storage.getItem(id);
+				result.push(getTaskObj(id,task));
+			}
+			return result;
+		};
+		this.removeTask = function(taskId){
+			storage.removeItem(taskId);
+		}
+	}
+	(function(window){
+		var document = window.document
+			,btnAddTask
+			,txtTask
+			,ulTaskList
+			,selectTasks
+			,btnRemoveTask
+			,taskStorage = new TaskStorage();
+		window.addEventListener("DOMContentLoaded",initialize);
+		window.addEventListener("storage",onStorageModified);
+		function onStorageModified(storageEvt){
+			var key = storageEvt.key;
+			if (!!storageEvt.newValue && !storageEvt.oldValue)
+				addTaskToUI({id : key, task : storageEvt.newValue});
+			if (!storageEvt.newValue && !!storageEvt.oldValue)
+				removeTaskFromUI(key);
+		}
+		function initialize(){
+			btnAddTask = document.getElementById("btnAddTask");
+			txtTask = document.getElementById("txtTask");
+			ulTaskList = document.getElementById("ulTaskList");
+			selectTasks = document.getElementById("selectTasks");
+			btnRemoveTask = document.getElementById("btnRemoveTask");
+			btnAddTask.addEventListener("click",onBtnAddTaskClick);
+			btnRemoveTask.addEventListener("click",onBtnRemoveTaskClick);
+
+			loadTasksFromStorage();
+		}
+
+		function onBtnRemoveTaskClick(){
+			var selectedTaskId = selectTasks.value;
+			taskStorage.removeTask(selectedTaskId);
+			removeTaskFromUI(selectedTaskId);
+			
+		}
+		function removeTaskFromUI(taskId){
+			document.querySelector("li[task-id='" + taskId + "']").remove();
+			document.querySelector("option[value='" + taskId + "']").remove();
+		}
+		function loadTasksFromStorage(){
+			var allTasks = taskStorage.getAllTasks();
+			for(var i=0;i<allTasks.length;i++){
+				addTaskToUI(allTasks[i]);
+			}
+		}
+		function onBtnAddTaskClick(){
+			var taskName = txtTask.value;
+			var newTaskObj = taskStorage.addTask(taskName);
+			addTaskToUI(newTaskObj);			
+		}
+		function addTaskToUI(newTaskObj){
+			var newTask = "<li task-id='" + newTaskObj.id + "'>" + newTaskObj.task +"</li>";
+			ulTaskList.innerHTML += newTask;
+			selectTasks.innerHTML += "<option value='"+ newTaskObj.id + "'>" + newTaskObj.task + "</option>";
+
+		}
+
+	}(window,undefined));
+	</script>
+</head>
+<body>
+	<h1>Task Manager</h1>
+	<span>Task :</span>
+	<input type="text" name="" id="txtTask">
+	<input type="button" value="Add Task" id="btnAddTask">
+	<select name="" id="selectTasks"></select>
+	<input type="button" value="Remove Task" id="btnRemoveTask">
+	<ul id="ulTaskList">
+		 	
+	</ul>
+	<div id="divMessages"></div>
+</body>
+</html>
