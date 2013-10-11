@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CSS3 Demo</title>
+	<style>
+	#content{
+		margin : 150px;
+		border : 5px solid black;
+		height: 300px;
+		width : 300px;
+		text-align: center;
+		line-height: 300px;
+		font-size: 42px;
+		/* background-color: lightblue; */
+
+
+
+		border-radius: 100px;
+		box-shadow: 0px 0px 0px 5px gray, 0px 0px 0px 10px blue;
+		background: -webkit-linear-gradient(top, red 0%, red 33%, white 33%, white 66%, green 66%, green 100%);
+		
+
+		/* -webkit- -> any webkit browser (chrome, safari, new opera)
+		-moz- -> for firefox
+		-o- -> opera
+		-ms- -> microsoft IE */
+		-webkit-transition : -webkit-transform 0.5s;
+        
+        }
+
+        #content:hover{
+        	-webkit-transform : rotate(45deg) scale(0.5,0.5);
+        }
+	
+	</style>
+</head>
+<body>
+	<div id="content">Cisco Video</div>
+</body>
+</html>
